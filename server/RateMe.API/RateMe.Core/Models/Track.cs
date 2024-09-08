@@ -6,7 +6,7 @@ public class Track
    public Guid TrackId { get; }
    public string TrackName { get; } = string.Empty;
    public string ArtistName { get; } = string.Empty;
-   public TimeSpan Duration { get; } //TODO TimeSpan??
+   public TimeSpan Duration { get; } 
    public string TrackLogoUrl { get; }
    public double AvarageRating { get; } = default(double);
    public string Genre { get; } = string.Empty;
@@ -23,7 +23,7 @@ public class Track
       Genre = genre;
    }
 
-   public static (Track, string Error) Create(Guid trackId, string trackName, string artistName, TimeSpan duration,
+   public static (Track Track, string Error) Create(Guid trackId, string trackName, string artistName, TimeSpan duration,
       string trackLogoUrl, double avarageRating, string genre)
    {
       var error = string.Empty;
