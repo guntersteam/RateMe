@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateMe.Persistence", "RateM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateMe.Application", "RateMe.Application\RateMe.Application.csproj", "{9E9C77EF-2000-444F-AEF9-A9F80D19818D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RateMe.Infrastructure", "RateMe.Infrastructure\RateMe.Infrastructure.csproj", "{5F86BA1F-5062-4980-8946-D6DB78F79BD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{9E9C77EF-2000-444F-AEF9-A9F80D19818D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9E9C77EF-2000-444F-AEF9-A9F80D19818D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9E9C77EF-2000-444F-AEF9-A9F80D19818D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F86BA1F-5062-4980-8946-D6DB78F79BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F86BA1F-5062-4980-8946-D6DB78F79BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F86BA1F-5062-4980-8946-D6DB78F79BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F86BA1F-5062-4980-8946-D6DB78F79BD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
