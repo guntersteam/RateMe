@@ -8,6 +8,7 @@ public class User
    public Guid Id { get; }
    public string Name { get; } = string.Empty;
    public string Surname { get; } = string.Empty;
+   public string Email { get; } = string.Empty;
    public string About { get; } = string.Empty;
    public string UserName { get; } = string.Empty;
    public string HashPassword { get; } = string.Empty;
@@ -15,12 +16,14 @@ public class User
    public string AvatarLink { get; } = string.Empty;
    public Role Role { get; } = Role.User;
 
-   public User(Guid id, string name, string surname, string about, string userName, string hashPassword, Sex sex,
+   public User(Guid id, string name, string surname, string email, string about, string userName, string hashPassword,
+      Sex sex,
       string avatarLink, Role role)
    {
       Id = id;
       Name = name;
       Surname = surname;
+      Email = email;
       About = about;
       UserName = userName;
       HashPassword = hashPassword;
@@ -29,8 +32,9 @@ public class User
       Role = role;
    }
 
-   public static (User, string Error) Create(Guid id, string name, string surname, string about, string userName,
-      string hashPassword, Sex sex, string avatarLink, Role role)
+   public static (User user, string Error) Create(Guid id, string email, string userName,
+      string hashPassword, Sex sex = Sex.UnSelected, string avatarLink = null, Role role = Role.User,
+      string surname = null, string name = null, string about = null)
    {
       var error = string.Empty;
 
@@ -44,7 +48,7 @@ public class User
          error = "username can't be smaller than 2 chars";
       }
 
-      var user = new User(id, name, surname, about, userName, hashPassword, sex, avatarLink, role);
+      var user = new User(id, name, surname, email, about, userName, hashPassword, sex, avatarLink, role);
 
       return (user, error);
    }
