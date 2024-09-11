@@ -1,6 +1,8 @@
-﻿namespace RateMe.API.Contracts.Users;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RateMe.API.Contracts.Users;
 
 public record RegisterUserRequest(
-   string UserName,
-   string Email,
-   string Password);
+   [Required] string UserName,
+   [Required] string Email,
+   [Required] string Password);

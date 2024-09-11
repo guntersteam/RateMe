@@ -1,5 +1,7 @@
-﻿namespace RateMe.API.Contracts.Users;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RateMe.API.Contracts.Users;
 
 public record LoginUserRequest(
-   string UserName,
-   string Password);
+   [Required] string UserName,
+   [Required] string Password);
