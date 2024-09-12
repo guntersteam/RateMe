@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RateMe.Core.Abstractions;
+using RateMe.Core.Abstractions.Services;
 using RateMe.Core.Enums;
 using RateMe.Core.Models;
 using RateMe.Persistence.Entities;
 
 namespace RateMe.Persistence.Repositories;
 
-public class UserRepository : IRepository<User>
+public class UserRepository : IUserRepository
 {
    private readonly RateMeDbContext _context;
 
@@ -20,14 +21,14 @@ public class UserRepository : IRepository<User>
       var userEntity = new UserEntity
       {
          Id = entity.Id,
-         Name = entity.Name,
-         Surname = entity.Surname,
+         Name = entity.Name ?? string.Empty,
+         Surname = entity.Surname ?? string.Empty,
          Email = entity.Email,
-         About = entity.About,
+         About = entity.About ?? string.Empty,
          UserName = entity.UserName,
          HashPassword = entity.HashPassword,
          Sex = entity.Sex,
-         AvatarLink = entity.AvatarLink,
+         AvatarLink = entity.AvatarLink ?? string.Empty,
          Role = entity.Role,
       };
 
@@ -65,5 +66,17 @@ public class UserRepository : IRepository<User>
          .Select(u => User.Create(u.Id, u.Email, u.UserName, u.HashPassword, u.Sex, u.AvatarLink, u.Role, u.Surname,
             u.Name, u.About).user)
          .FirstOrDefaultAsync(u => u.Id == id);
+   }
+
+   public async Task<User?> GetByEmail(string userName)
+   {
+      var users = await _context.Users
+         .Select(u => User.Create(u.Id, u.Email, u.UserName, u.HashPassword, u.Sex, u.AvatarLink, u.Role, u.Surname,
+            u.Name, u.About).user)
+         .ToListAsync();
+
+      var candidate = users.FirstOrDefault(u => u.UserName == userName);
+
+      return candidate;
    }
 }

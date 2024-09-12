@@ -1,8 +1,10 @@
 ﻿using BCrypt.Net;
+using Microsoft.AspNetCore.Identity;
+using RateMe.Application.Interfaces.Auth;
 
 namespace RateMe.Infrastructure;
 
-public class PasswordHasher
+public class PasswordHasher : IPasswordHasher
 {
    public string Generate(string password) =>
       BCrypt.Net.BCrypt.EnhancedHashPassword(password, HashType.SHA256);
