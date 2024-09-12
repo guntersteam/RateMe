@@ -6,4 +6,9 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\RateMe.Core\RateMe.Core.csproj" />
+      <ProjectReference Include="..\RateMe.Persistence\RateMe.Persistence.csproj" />
+    </ItemGroup>
+
 </Project>
