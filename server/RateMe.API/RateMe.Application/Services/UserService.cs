@@ -1,4 +1,5 @@
-﻿using RateMe.Application.Interfaces;
+﻿using RateMe.Application.Contracts.User;
+using RateMe.Application.Interfaces;
 using RateMe.Application.Interfaces.Auth;
 using RateMe.Core.Abstractions;
 using RateMe.Core.Abstractions.Services;
@@ -37,19 +38,23 @@ public class UserService : IUserService
 
    public async Task<string> Login(string userName, string password)
    {
+      var response = new LoginResponse();
       var candidate = await _userRepository.GetByEmail(userName);
 
       var passwordVerifyResult = _passwordHasher.Verify(password, candidate.HashPassword);
 
-      if (passwordVerifyResult == false)
+      if (candidate == null && passwordVerifyResult == false)
       {
          throw new Exception("Failed to login, Incorrect password");
       }
-
+      
       var token = _jwtProvider.Generate(candidate);
 
+      response.IsLoggedIn = true;
+      response.JwtToken = token;
+      response.RefreshToken = string.Empty;
+      
       return token;
-
    }
    
 }
