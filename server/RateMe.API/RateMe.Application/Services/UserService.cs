@@ -36,7 +36,7 @@ public class UserService : IUserService
       
    }
 
-   public async Task<string> Login(string userName, string password)
+   public async Task<LoginResponse> Login(string userName, string password)
    {
       var response = new LoginResponse();
       var candidate = await _userRepository.GetByEmail(userName);
@@ -53,8 +53,8 @@ public class UserService : IUserService
       response.IsLoggedIn = true;
       response.JwtToken = token;
       response.RefreshToken = string.Empty;
-      
-      return token;
+
+      return response;
    }
    
 }

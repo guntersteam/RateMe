@@ -30,7 +30,7 @@ public class UserController : ControllerBase
    {
       var token = await _userService.Login(request.UserName,request.Password);
       
-      HttpContext.Response.Cookies.Append("tasty-cookies",token);
+      HttpContext.Response.Cookies.Append("tasty-cookies",token.JwtToken);
          
       return Ok(token);
 

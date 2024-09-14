@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RateMe.Core.Abstractions;
-using RateMe.Core.Abstractions.Services;
 using RateMe.Core.Enums;
 using RateMe.Core.Models;
 using RateMe.Persistence.Entities;
