@@ -10,9 +10,10 @@ namespace RateMe.API.Extensions;
 public static class ApiExtension
 {
    public static void AddApiAuthentication(this IServiceCollection services,
-      IOptions<JwtOptions> options)
+      IConfiguration configuration)
    {
-      var jwtOptions = options.Value;
+      var jwtOptions = new JwtOptions();
+      configuration.GetSection(nameof(JwtOptions)).Bind(jwtOptions);
 
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
          .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

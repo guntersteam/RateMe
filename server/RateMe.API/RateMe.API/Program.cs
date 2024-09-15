@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RateMe.API.Extensions;
 using RateMe.Application.Interfaces;
 using RateMe.Application.Interfaces.Auth;
 using RateMe.Application.Services;
@@ -16,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 builder.Services.Configure<JwtOptions>(configuration.GetSection(nameof(JwtOptions)));
+builder.Services.AddApiAuthentication(builder.Configuration);
 
 builder.Services.AddAuthorization();
 
@@ -26,6 +28,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
