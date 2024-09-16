@@ -6,7 +6,7 @@ using RateMe.Persistence.Entities;
 
 namespace RateMe.Persistence.Repositories;
 
-public class TrackRepository : IRepository<TrackEntity>
+public class TrackRepository : ITrackRepository
 {
    private readonly RateMeDbContext _context;
 
@@ -15,7 +15,7 @@ public class TrackRepository : IRepository<TrackEntity>
       _context = context;
    }
 
-   public async Task<Guid> Create(TrackEntity track)
+   public async Task<Guid> Create(Track track)
    {
       var trackEntity = new TrackEntity
       {
@@ -50,9 +50,12 @@ public class TrackRepository : IRepository<TrackEntity>
       
    }
 
-   public async Task<List<TrackEntity?>> Get()
+   public async Task<List<Track?>> Get()
    {
-      var trackEntities = await _context.Tracks.AsNoTracking().ToListAsync();
+      var trackEntities = await _context.Tracks
+         .AsNoTracking()
+         .Select(t => Track.Create(t.TrackId,t.TrackName,t.ArtistName,t.Duration,t.TrackLogoUrl,t.AvarageRating,t.Genre).Track)
+         .ToListAsync();
 
       return trackEntities;
    }
@@ -66,17 +69,21 @@ public class TrackRepository : IRepository<TrackEntity>
       return id;
    }
 
-   public async Task<TrackEntity?> GetById(Guid id)
+   public async Task<Track> GetById(Guid id)
    {
-      return await _context.Tracks
+       var tracks = await _context.Tracks
          .AsNoTracking()
+         .Select(t => Track.Create(t.TrackId,t.TrackName,t.ArtistName,t.Duration,t.TrackLogoUrl,t.AvarageRating,t.Genre).Track)
          .FirstOrDefaultAsync(t => t.TrackId == id);
+
+       return tracks;
    }
 
-   public async Task<List<TrackEntity>> GetByPage(int page, int size)
+   public async Task<List<Track>> GetByPage(int page, int size)
    {
       return await _context.Tracks
          .AsNoTracking()
+         .Select(t => Track.Create(t.TrackId,t.TrackName,t.ArtistName,t.Duration,t.TrackLogoUrl,t.AvarageRating,t.Genre).Track)
          .Skip((page - 1) * size)
          .Take(size)
          .ToListAsync();
