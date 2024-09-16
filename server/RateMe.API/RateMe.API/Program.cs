@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using RateMe.API.Extensions;
 using RateMe.Application.Interfaces;
 using RateMe.Application.Interfaces.Auth;
+using RateMe.Application.Interfaces.Services;
 using RateMe.Application.Services;
 using RateMe.Core.Abstractions;
 using RateMe.Core.Abstractions.Services;
@@ -26,9 +27,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<ITrackRepository, TrackRepository>();
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<ITrackService, TrackService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
