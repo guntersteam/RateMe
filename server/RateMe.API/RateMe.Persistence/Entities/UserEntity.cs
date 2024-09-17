@@ -1,4 +1,5 @@
-﻿using RateMe.Core.Enums;
+﻿using Microsoft.AspNetCore.Identity;
+using RateMe.Core.Enums;
 
 namespace RateMe.Persistence.Entities;
 
@@ -14,6 +15,8 @@ public class UserEntity
    public Sex Sex { get; set; } = Sex.UnSelected;
    public string AvatarLink { get; set; } = string.Empty;
    public Role Role { get; set; } = Role.User;
+   
+   public TokenEntity Token { get; set; }
    public List<ReviewEntity> Reviews { get; set; } = [];
    public List<UserTrackEntity> UserTracks { get; set; } = [];
    public List<PlayListEntity> PlayLists { get; set; } = [];

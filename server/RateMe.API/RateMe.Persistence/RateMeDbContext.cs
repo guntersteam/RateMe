@@ -16,6 +16,7 @@ public class RateMeDbContext(DbContextOptions<RateMeDbContext> options)
    public DbSet<UserTrackEntity> UserTracks { get; set; }
    public DbSet<PlayListEntity> PlayLists { get; set; }
    public DbSet<PlayListTrackEntity> PlayListTracks { get; set; }
+   public DbSet<TokenEntity> Tokens { get; set; }
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
    {
@@ -25,6 +26,7 @@ public class RateMeDbContext(DbContextOptions<RateMeDbContext> options)
       modelBuilder.ApplyConfiguration(new PlayListConfiguration());
       modelBuilder.ApplyConfiguration(new UserTrackConfiguration());
       modelBuilder.ApplyConfiguration(new PlayListTrackConfiguration());
+      modelBuilder.ApplyConfiguration(new TokenConfiguration());
    }
 }
 
