@@ -6,7 +6,7 @@ using RateMe.Application.Interfaces.Services;
 namespace RateMe.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/track")]
 public class TrackController : ControllerBase
 {
    private readonly ITrackService _trackService;
@@ -17,6 +17,7 @@ public class TrackController : ControllerBase
    }
 
    [HttpPost]
+   [Authorize]
    public async Task<IActionResult> Create([FromBody] TrackCreationRequest request)
    {
       await _trackService.CreateTrack(request.TrackName, request.ArtistName, request.Duration, request.TrackLogoUrl,

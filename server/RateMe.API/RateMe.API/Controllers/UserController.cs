@@ -1,20 +1,23 @@
 ﻿using Microsoft.AspNetCore.DataProtection.Internal;
 using Microsoft.AspNetCore.Mvc;
 using RateMe.API.Contracts.Users;
+using RateMe.Application.Contracts.Token;
+using RateMe.Application.Interfaces.Services;
 using RateMe.Core.Abstractions.Services;
 
 namespace RateMe.API.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/user")]
 public class UserController : ControllerBase
 {
    private readonly IUserService _userService;
+   private readonly ITokenService _tokenService;
 
-
-   public UserController(IUserService userService)
+   public UserController(IUserService userService, ITokenService tokenService)
    {
       _userService = userService;
+      _tokenService = tokenService;
    }
 
    [HttpPost("register")]
@@ -34,5 +37,19 @@ public class UserController : ControllerBase
          
       return Ok(token);
 
+   }
+
+   [HttpPost("refresh")]
+   public async Task<IActionResult> Refresh(RefreshTokenModel refreshTokenModel)
+   {
+      var loginResult = await _tokenService.Refresh(refreshTokenModel);
+
+      if (loginResult.IsLoggedIn)
+      {
+         HttpContext.Response.Cookies.Append("tasty-cookies", loginResult.JwtToken);
+         return Ok(loginResult);
+      }
+      
+      return Unauthorized();
    }
 }
