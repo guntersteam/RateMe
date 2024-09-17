@@ -60,21 +60,25 @@ public class UserRepository : IUserRepository
 
    public async Task<User?> GetById(Guid id)
    {
-      return await _context.Users
+      var users = await _context.Users
          .AsNoTracking()
          .Select(u => User.Create(u.Id, u.Email, u.UserName, u.HashPassword, u.Sex, u.AvatarLink, u.Role, u.Surname,
             u.Name, u.About).user)
-         .FirstOrDefaultAsync(u => u.Id == id);
+         .ToListAsync();
+
+      var candidate = users.FirstOrDefault(u => u.Id == id);
+
+      return candidate;
    }
 
-   public async Task<User?> GetByEmail(string userName)
+   public async Task<User?> GetByEmail(string email)
    {
       var users = await _context.Users
          .Select(u => User.Create(u.Id, u.Email, u.UserName, u.HashPassword, u.Sex, u.AvatarLink, u.Role, u.Surname,
             u.Name, u.About).user)
          .ToListAsync();
 
-      var candidate = users.FirstOrDefault(u => u.UserName == userName);
+      var candidate = users.FirstOrDefault(u => u.Email == email );
 
       return candidate;
    }

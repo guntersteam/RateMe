@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RateMe.Application.Interfaces;
+using RateMe.Application.Interfaces.Auth;
 using RateMe.Core.Models;
 
 namespace RateMe.Infrastructure;
@@ -12,7 +13,7 @@ namespace RateMe.Infrastructure;
 public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
 {
    private readonly JwtOptions _options = options.Value;
-   
+
    public string Generate(User user)
    {
       Claim[] claims = [new("userId", user.Id.ToString())];
@@ -29,4 +30,21 @@ public class JwtProvider(IOptions<JwtOptions> options) : IJwtProvider
 
       return tokenValue;
    }
+
+   public ClaimsPrincipal GetPrincipal(string accessToken)
+   {
+      var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
+      
+      var validation = new TokenValidationParameters
+      {
+         IssuerSigningKey = securityKey,
+         ValidateIssuer = false,
+         ValidateAudience = false,
+         ValidateLifetime = false,
+         ValidateIssuerSigningKey = true
+      };
+
+      return new JwtSecurityTokenHandler().ValidateToken(accessToken, validation, out _);
+   }
+
 }

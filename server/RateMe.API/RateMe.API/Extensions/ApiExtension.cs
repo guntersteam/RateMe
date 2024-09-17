@@ -24,6 +24,7 @@ public static class ApiExtension
                ValidateAudience = false,
                ValidateLifetime = true,
                ValidateIssuerSigningKey = true,
+               ClockSkew = TimeSpan.Zero,
                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.SecretKey))
             };
 

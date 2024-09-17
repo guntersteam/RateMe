@@ -1,10 +1,9 @@
 ﻿using RateMe.Application.Contracts.User;
-using RateMe.Application.Interfaces;
 using RateMe.Application.Interfaces.Auth;
+using RateMe.Application.Interfaces.Services;
 using RateMe.Core.Abstractions;
 using RateMe.Core.Abstractions.Services;
 using RateMe.Core.Models;
-using RateMe.Persistence.Repositories;
 
 namespace RateMe.Application.Services;
 
@@ -13,12 +12,14 @@ public class UserService : IUserService
    private readonly IPasswordHasher _passwordHasher;
    private readonly IUserRepository _userRepository;
    private readonly IJwtProvider _jwtProvider;
+   private readonly ITokenService _tokenService;
 
-   public UserService(IPasswordHasher passwordHasher,IUserRepository userRepository, IJwtProvider jwtProvider)
+   public UserService(IPasswordHasher passwordHasher,IUserRepository userRepository, IJwtProvider jwtProvider, ITokenService tokenService)
    {
       _passwordHasher = passwordHasher;
       _userRepository = userRepository;
       _jwtProvider = jwtProvider;
+      _tokenService = tokenService;
    }
 
    public async Task Register(string userName,string email, string password)
@@ -29,7 +30,7 @@ public class UserService : IUserService
 
       if (string.IsNullOrEmpty(userResult.Error))
       {
-         //TODO: intercept
+         throw new Exception("Cannot create user model");
       }
 
       await _userRepository.Create(userResult.user);
@@ -41,9 +42,14 @@ public class UserService : IUserService
       var response = new LoginResponse();
       var candidate = await _userRepository.GetByEmail(userName);
 
+      if (candidate == null)
+      {
+         throw new Exception("user wasn't found");
+      }
+
       var passwordVerifyResult = _passwordHasher.Verify(password, candidate.HashPassword);
 
-      if (candidate == null && passwordVerifyResult == false)
+      if (!passwordVerifyResult)
       {
          throw new Exception("Failed to login, Incorrect password");
       }
@@ -52,8 +58,11 @@ public class UserService : IUserService
 
       response.IsLoggedIn = true;
       response.JwtToken = token;
-      response.RefreshToken = string.Empty;
+      response.RefreshToken = _tokenService.GenerateRefreshTokenString();
+      
 
+      await _tokenService.AddOrUpdateToken(candidate.Id, response.RefreshToken, DateTime.UtcNow.AddDays(15));
+      
       return response;
    }
    

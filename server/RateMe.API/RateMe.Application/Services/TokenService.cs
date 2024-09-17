@@ -59,12 +59,14 @@ public class TokenService : ITokenService
    {
       var principal = _jwtProvider.GetPrincipal(tokenModel.JwtToken);
 
+      var userId = principal.Claims.FirstOrDefault(t => t.Type == "userId");
+      
       var loginResponse = new LoginResponse();
 
-      if (principal?.Identity?.Name is null)
+      if (userId is null)
          return loginResponse;
 
-      var refreshToken = await _tokenRepository.GetByUserId(Guid.Parse(principal.Identity.Name));
+      var refreshToken = await _tokenRepository.GetByUserId(Guid.Parse(userId.Value));
 
 
       if (refreshToken is null || refreshToken.TokenString != tokenModel.RefreshToken ||
@@ -78,7 +80,7 @@ public class TokenService : ITokenService
       loginResponse.IsLoggedIn = true;
       loginResponse.JwtToken = token;
       loginResponse.RefreshToken = GenerateRefreshTokenString();
-
+      await AddOrUpdateToken(user.Id, loginResponse.RefreshToken, DateTime.UtcNow.AddDays(15));
       return loginResponse;
    }
 }
