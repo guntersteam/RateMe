@@ -11,4 +11,8 @@
       <ProjectReference Include="..\RateMe.Persistence\RateMe.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.1.2" />
+    </ItemGroup>
+
 </Project>

@@ -24,4 +24,8 @@
       <ProjectReference Include="..\RateMe.Persistence\RateMe.Persistence.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Contracts\Token\" />
+    </ItemGroup>
+
 </Project>
