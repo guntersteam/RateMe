@@ -33,6 +33,7 @@ builder.Services.AddScoped<ITrackRepository, TrackRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ITokenService,TokenService>();
 builder.Services.AddScoped<ITrackService, TrackService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

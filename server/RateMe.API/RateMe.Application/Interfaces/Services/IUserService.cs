@@ -1,4 +1,6 @@
-﻿using RateMe.Application.Contracts.User;
+﻿
+
+using RateMe.Application.Contracts.User;
 
 namespace RateMe.Core.Abstractions.Services;
 
