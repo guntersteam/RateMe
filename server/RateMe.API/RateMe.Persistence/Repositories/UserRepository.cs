@@ -71,6 +71,7 @@ public class UserRepository : IUserRepository
       return candidate;
    }
 
+   //TODO: Заменить на GetByUsername
    public async Task<User?> GetByEmail(string email)
    {
       var users = await _context.Users
@@ -78,7 +79,7 @@ public class UserRepository : IUserRepository
             u.Name, u.About).user)
          .ToListAsync();
 
-      var candidate = users.FirstOrDefault(u => u.Email == email );
+      var candidate = users.FirstOrDefault(u => u.UserName == email );
 
       return candidate;
    }

@@ -31,7 +31,7 @@ public class AuthService: IAuthService
 
       var userResult = User.Create(Guid.NewGuid(), userName: userName, email: email, hashPassword: passwordHash);
 
-      if (string.IsNullOrEmpty(userResult.Error))
+      if (!string.IsNullOrEmpty(userResult.Error))
       {
          throw new Exception("Cannot create user model");
       }

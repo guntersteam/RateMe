@@ -13,17 +13,19 @@ public class UserController : ControllerBase
 {
    private readonly IUserService _userService;
    private readonly ITokenService _tokenService;
+   private readonly IAuthService _authService;
 
-   public UserController(IUserService userService, ITokenService tokenService)
+   public UserController(IUserService userService, ITokenService tokenService,IAuthService authService)
    {
       _userService = userService;
       _tokenService = tokenService;
+      _authService = authService;
    }
 
    [HttpPost("register")]
    public async Task<IActionResult> Register([FromBody] RegisterUserRequest request)
    {
-      await _userService.Register(request.UserName, request.Email, request.Password);
+      await _authService.Register(request.UserName, request.Email, request.Password);
 
       return Ok();
    }
@@ -31,7 +33,7 @@ public class UserController : ControllerBase
    [HttpPost("login")]
    public async Task<IActionResult> Login([FromBody] LoginUserRequest request)
    {
-      var token = await _userService.Login(request.UserName,request.Password);
+      var token = await _authService.Login(request.UserName,request.Password);
       
       HttpContext.Response.Cookies.Append("tasty-cookies",token.JwtToken);
          
